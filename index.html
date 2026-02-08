@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OJORUMI 💘 Valentine?</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: linear-gradient(to bottom, #ffe6f0, #fff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 520px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      color: #ff4d88;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      align-items: center;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-weight: bold;
+      min-width: 160px;
+    }
+
+    #yesBtn {
+      background: #28a745;
+      color: white;
+    }
+
+    #noBtn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .message {
+      font-size: 1.6rem;
+      margin-top: 30px;
+      color: #ff3385;
+      font-weight: bold;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      border-radius: 50%;
+      animation: fall 2.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id="page">
+    <h1 id="question">OJORUMI 🥺💘 Will you be my Valentine?</h1>
+
+    <div class="buttons" id="btnGroup">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 💔</button>
+    </div>
+
+    <p class="message" id="response"></p>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const question = document.getElementById("question");
+    const response = document.getElementById("response");
+    const page = document.getElementById("page");
+    const btnGroup = document.getElementById("btnGroup");
+
+    let finished = false;
+
+    /* ---------- CONFETTI ---------- */
+    function launchConfetti() {
+      for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.backgroundColor =
+          "hsl(" + Math.random() * 360 + ", 100%, 70%)";
+
+        confetti.style.animationDuration =
+          2 + Math.random() * 2 + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    /* ---------- YES FUNCTION (RUNS ONCE) ---------- */
+    function handleYes() {
+      if (finished) return;
+      finished = true;
+
+      // Disable buttons fully
+      yesBtn.disabled = true;
+      noBtn.disabled = true;
+
+      // Remove ALL click behaviors completely
+      yesBtn.replaceWith(yesBtn.cloneNode(true));
+      noBtn.replaceWith(noBtn.cloneNode(true));
+
+      // Hide button group instantly
+      btnGroup.style.display = "none";
+
+      launchConfetti();
+
+      question.innerHTML = "YAYYYY OJORUMI!!! 😭💖";
+      response.innerHTML = `
+        Valentine don set 🥰🌹 <br><br>
+        <strong>Date confirmed: Feb 14, 2026 💘</strong>
+      `;
+
+      setTimeout(() => {
+        page.innerHTML = `
+          <h1>💌 OJORUMI Don Talk Yes 💖</h1>
+          <p class="message">
+            Omo I no fit lie… you make me happy die 😭❤️ <br>
+            Valentine don lock in, no shaking 😌🌹 <br><br>
+            <strong>Date confirmed: Feb 14, 2026 💘</strong>
+          </p>
+        `;
+      }, 3000);
+    }
+
+    /* ---------- NO BUTTON TEXTS ---------- */
+    const noTexts = [
+      "ahan 😒",
+      "wdymm 🤨",
+      "pls be fr 😭",
+      "don't do this 💔",
+      "are you sure?? 😢",
+      "dfkm 😳",
+      "Omo you dey whine me? 😭",
+      "No be so na 😩",
+      "Abeg naaaa 🥺",
+      "Why you dey do like this? 💔",
+      "Chaii you wan wound me? 😭",
+      "Oreee na cruise you dey catch 😭",
+      "final answer? 👀"
+    ];
+
+    let clickCount = 0;
+
+    noBtn.addEventListener("click", () => {
+      if (finished) return;
+
+      noBtn.innerHTML = noTexts[clickCount];
+      clickCount++;
+
+      if (clickCount === noTexts.length) {
+        yesBtn.style.transform = "scale(2.8)";
+        yesBtn.innerHTML = "YES NOW 💖😭";
+
+        noBtn.innerHTML = "Yes 💖";
+        noBtn.style.background = "#28a745";
+
+        // Now NO triggers YES properly
+        noBtn.onclick = handleYes;
+      }
+    });
+
+    yesBtn.addEventListener("click", handleYes);
+  </script>
+</body>
+</html>
